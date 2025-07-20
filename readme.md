@@ -21,7 +21,7 @@ A brief overview of the fashion dataset used for training:
 - **Size**: \~44,000 images stored under `data/images/`, each linked via an `image` column in the CSV.
 - **Preprocessing Steps**:
   1. Removed classes with fewer than 50 samples to reduce noise.
-  2. Normalized label distributions by merging rarely-used categories under "Other".
+  2. Normalized label distributions by merging rarely-used categoriesing.
   3. Resized images to a uniform target size (`TARGET_SIZE`) and applied standard normalization (`MEAN`, `STD`).
 
 This dataset powers our multi-task models, ensuring balanced learning across all 7 fashion attributes.
@@ -70,14 +70,12 @@ Based on these results, we adapted our backbone-task assignment:
    - By assigning `gender` and `baseColour` to ResNet18, we leverage its robustness on coarse labels and avoid ResNet50’s over-parameterization for these tasks.
    - The remaining four attributes, which require richer feature extraction, are routed through ResNet50 to maximize accuracy without overfitting.
 
-### 🧠 Model Choice & Task Allocation
-
-1. **Why ResNet18 & ResNet50?**
+4. **Why ResNet18 & ResNet50?**
 
    - **ResNet18** is lightweight, fast to train and infer, with fewer parameters—ideal for simpler attributes (e.g. `gender`, `masterCategory`) where overcapacity risks overfitting.
    - **ResNet50** offers deeper feature extraction, capturing finer details—beneficial for complex or high-cardinality labels (`subCategory`, `articleType`, `baseColour`, `season`, `usage`).
 
-2. **Separate Heads by Label Complexity**
+5. **Separate Heads by Label Complexity**
 
    - We partitioned the 7 tasks into two groups based on label count and visual complexity:
      - **Group A (ResNet18)**: `gender` (5 classes), `masterCategory` (4 classes),
