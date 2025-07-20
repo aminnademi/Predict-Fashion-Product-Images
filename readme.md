@@ -2,13 +2,12 @@
 
 ## 📖 Table of Contents
 
-- [Features](#-features)
 - [Dataset](#-dataset)
+- [Features](#-features)
 - [Evaluation Results & Model Rationale](#-evaluation-results--model-rationale)
 - [Architecture](#-architecture)
 - [Installation](#-installation)
 - [Running the App](#-running-the-app)
-- [Configuration](#-configuration)
 
 A compact project that trains multi-task classification models on a fashion dataset and serves predictions via a Streamlit web app.
 
