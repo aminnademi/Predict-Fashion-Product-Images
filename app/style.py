@@ -72,7 +72,7 @@ def _safe_load(model, path):
 def load_models():
     # A: ResNet18 with 7 heads (we use only 2)
     num_all = [len(label2idx[a]) for a in ATTRS]
-    model_a = ResNet18MultiTask(num_all, backbone_weights=None)
+    model_a = ResNet18MultiTask(num_all)
     _safe_load(model_a, MODEL_A_PATH)
     model_a.to(DEVICE).eval()
 
@@ -135,7 +135,7 @@ if file:
 
     # Generate image caption from predicted tags
     if st.button("Generate Image Caption"):
-        prompt = "Generate a short, creative and stylish caption for a fashion item with the following attributes:\n"
+        prompt = "Generate a stylish and creative fashion caption (maximum 4 words),based only on the following attributes: gender, subCategory, baseColour, and usage, dont forgert to mention color,.\n"
         for a, d in tags.items():
             prompt += f"- {a}: {d['label']}\n"
         prompt += "\nCaption:"
