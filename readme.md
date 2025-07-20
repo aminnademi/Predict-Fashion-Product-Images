@@ -112,7 +112,7 @@ This diagram illustrates the flow from image upload in Streamlit to prediction e
 ## 🚀 Running the App
 
 1. Place model files (`.pth`) and `label2idx.json` alongside `app.py` .
-2. Set your Groq API key (you can create it on https://console.groq.com/keys for free) xin `app.py`:
+2. Set your Groq API key (you can create it on https://console.groq.com/keys for free) in `app.py`:
    ```python
    API_KEY = "your_api_key"
    ```
