@@ -91,9 +91,7 @@ Based on these results, we adapted our backbone-task assignment:
 
 Below is an overview of the app’s architecture.:
 
-```markdown
 ![App Architecture](app/architecture.jpg)
-```
 
 This diagram illustrates the flow from image upload in Streamlit to prediction engines (ResNet18 & ResNet50) and LLM-powered styling module.
 
