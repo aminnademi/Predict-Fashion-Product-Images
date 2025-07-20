@@ -1,0 +1,12 @@
+torch>=1.13
+torchvision>=0.14
+pandas
+numpy
+scikit-learn
+matplotlib
+tqdm
+Pillow
+streamlit
+requests
+openai
+transformers
