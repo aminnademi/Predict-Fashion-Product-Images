@@ -1,4 +1,5 @@
 # Fashion Multi-Task Tagging & Stylist App
+A compact project that trains multi-task classification models on a fashion dataset and serves predictions via a Streamlit web app.
 
 ## 📖 Table of Contents
 
@@ -9,7 +10,6 @@
 - [Installation](#-installation)
 - [Running the App](#-running-the-app)
 
-A compact project that trains multi-task classification models on a fashion dataset and serves predictions via a Streamlit web app.
 
 ---
 
