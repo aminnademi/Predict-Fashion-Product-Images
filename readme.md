@@ -40,47 +40,32 @@ This dataset powers our multi-task models, ensuring balanced learning across all
 
 After training, both ResNet variants were evaluated on the held-out 20% test split, reporting weighted F1-scores per attribute:
 
-| Attribute      | ResNet18 F1 | ResNet50 F1 |
-| -------------- | ----------- | ----------- |
-| gender         | 0.92        | 0.88        |
-| masterCategory | 0.88        | 0.90        |
-| subCategory    | 0.75        | 0.78        |
-| articleType    | 0.70        | 0.74        |
-| baseColour     | 0.85        | 0.80        |
-| season         | 0.79        | 0.81        |
-| usage          | 0.76        | 0.80        |
-| **Average**    | **0.82**    | **0.82**    |
+| Attribute      | ResNet18 F1   | ResNet50 F1   |
+| -------------- | -----------   | -----------   |
+| gender         | 0.915         | 0.779         |
+| masterCategory | 0.996         | 0.937         |
+| subCategory    | 0.969         | 0.880         |
+| articleType    | 0.912         | 0.772         |
+| baseColour     | 0.693         | 0.576         |
+| season         | 0.752         | 0.584         |
+| usage          | 0.917         | 0.831         |
+| **Average**    | **0.879**     | **0.766**     |
 
 ### 🧠 Model Choice & Task Allocation
 
-Based on these results, we adapted our backbone-task assignment:
+Based on these results, we revised our backbone-task assignment with the following observations:
 
-1. **ResNet18 excels on coarse attributes**
+1. **ResNet18 tends to outperform ResNet50 across most attributes, suggesting ResNet50 may be overfitting for some tasks.**
+   ResNet18 achieves notably higher F1 scores for attributes like `gender`, `masterCategory`, `subCategory`, and `articleType`. This indicates that a lighter backbone can generalize better on these attributes, likely because ResNet50’s greater complexity leads to overfitting on the available data.
 
-   - Demonstrated higher F1 on `gender` (0.92 vs. 0.88) and `baseColour` (0.85 vs. 0.80), indicating its capacity is sufficient to learn broad distinctions without overfitting.
-   - However, on fine-grained tasks like (`subCategory`, `articleType`), performance dips (0.75 and 0.70), suggesting under-capacity.
+2. **ResNet50 performs consistently worse on `baseColour` and `gender`, with the gap especially large for color prediction.**
+   This suggests ResNet50 struggles with the color attribute, possibly due to insufficient or noisy color-specific features or overfitting that reduces generalization. Conversely, `gender` prediction also appears better handled by ResNet18, indicating ResNet50’s capacity is unnecessary or even detrimental for this attribute.
 
-2. **ResNet50 for detailed attributes**
+3. **Given the above, we propose using ResNet18 for all attributes except `baseColour`.**
+   Although `baseColour` shows relatively low F1 scores on both models, ResNet18 still outperforms ResNet50, so it remains the preferred backbone for color prediction as well.
 
-   - Delivers stronger results on complex labels like (`subCategory`, `articleType`, `usage`), where deeper representations capture nuanced patterns.
-   - Yet slightly underperforms ResNet18 on broad tasks like `gender` and `baseColour`, hinting that its depth may introduce unnecessary complexity for easier distinctions.
-
-3. **Balancing Overfitting & Capacity**
-
-   - By assigning `gender` and `baseColour` to ResNet18, we leverage its robustness on coarse labels and avoid ResNet50’s over-parameterization for these tasks.
-   - The remaining four attributes, which require richer feature extraction, are routed through ResNet50 to maximize accuracy without overfitting.
-
-4. **Why ResNet18 & ResNet50?**
-
-   - **ResNet18** is lightweight, fast to train and infer, with fewer parameters—ideal for simpler attributes (e.g. `gender`, `masterCategory`) where overcapacity risks overfitting.
-   - **ResNet50** offers deeper feature extraction, capturing finer details—beneficial for complex or high-cardinality labels (`subCategory`, `articleType`, `baseColour`, `season`, `usage`).
-
-5. **Separate Heads by Label Complexity**
-
-   - We partitioned the 7 tasks into two groups based on label count and visual complexity:
-     - **Group A (ResNet18)**: `gender` (5 classes), `masterCategory` (4 classes),
-     - **Group B (ResNet50)**: `subCategory` (47 classes), `articleType` (40 classes), `baseColour` (14 classes), `season` (4 classes) `usage` (4 classes)
-   - This split balances computational load: lightweight backbone handles coarse-grained tags, while the deeper network focuses on fine-grained distinctions.
+4. **Overall, ResNet18 emerges as the more robust and generalizable backbone for this dataset and task setup,**
+   while ResNet50 appears to overfit on multiple attributes, especially those with fewer or less complex classes.
 
 ---
 
